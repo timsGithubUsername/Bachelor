@@ -1,6 +1,6 @@
 package data;
 
-public class WaveObjectV1Implementation implements WaveObjectV1 {
+public class WaveObjectV1Impl implements WaveObjectV1 {
     private final String name;
     private final int channels;
     private final int sampleRate;
@@ -10,8 +10,8 @@ public class WaveObjectV1Implementation implements WaveObjectV1 {
     private final byte[] audioData;
     private final double[] javaPCM;
 
-    public WaveObjectV1Implementation(String name, int channels, int sampleRate, int byteRate, int blockAlign,
-    int bitsPerSecond, byte[] audioData, double[] javaPCM){
+    public WaveObjectV1Impl(String name, int channels, int sampleRate, int byteRate, int blockAlign,
+                            int bitsPerSecond, byte[] audioData, double[] javaPCM){
         this.name = name;
         this.channels = channels;
         this. sampleRate = sampleRate;
