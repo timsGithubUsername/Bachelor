@@ -7,7 +7,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 
 public class FileReaderV1Impl implements FileReaderV1{
-    WaveObjectBuilderV1 waveObjectBuilder = new WaveObjectBuilderV1Impl(); //todo
+    WaveObjectBuilderV1 waveObjectBuilder = new WaveObjectBuilderV1Impl();
 
     /**
      * Creates a WaveObject from file path for use in this programm
