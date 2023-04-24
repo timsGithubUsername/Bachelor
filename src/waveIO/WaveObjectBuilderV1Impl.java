@@ -26,7 +26,7 @@ public class WaveObjectBuilderV1Impl implements WaveObjectBuilderV1 {
         //Pointer is at start from RIFF Chunk
         //verify RIFF format
         if (!checkIdentifier(RIFFIdentifier.RIFF.getName())) {
-            throw new Exception("Wrong File Format!");
+            throw new WrongFileFormatException();
         } else {
             goToChunk(RIFFIdentifier.FMT.getName());
         }
@@ -34,7 +34,7 @@ public class WaveObjectBuilderV1Impl implements WaveObjectBuilderV1 {
         //Pointer is at start from fmt Chunk
         //verify AudioFormat at pos 8 in this Chunk
         if (!checkFormat()) {
-            throw new Exception("Wrong Audio Format!");
+            throw new WrongAudioFormatException();
         }
 
         //Pointer is at pos 8 in this Chunk, to iterate in this Chunk, the pointer is incremented to fit the position
@@ -131,4 +131,9 @@ public class WaveObjectBuilderV1Impl implements WaveObjectBuilderV1 {
         return JavaPCMTools.calculatePCMArray(audioDataTemp, bitsPerSampleTemp);
     }
 
+    private class WrongFileFormatException extends Exception {
+    }
+
+    private class WrongAudioFormatException extends Exception {
+    }
 }
