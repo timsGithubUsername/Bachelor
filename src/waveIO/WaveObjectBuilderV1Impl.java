@@ -46,7 +46,6 @@ public class WaveObjectBuilderV1Impl implements WaveObjectBuilderV1 {
         //
         //reach next chunk          +2
         //then get audio data
-        //todo cut path to correct name
         return new WaveObjectV1Impl(name,
                 getChannelsFromData(),
                 getSampleRateFromData(),

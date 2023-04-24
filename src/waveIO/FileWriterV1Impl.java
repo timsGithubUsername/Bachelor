@@ -7,7 +7,7 @@ import java.nio.file.Paths;
 
 public class FileWriterV1Impl implements FileWriterV1{
 
-    WaveBytesBuilderV1 waveBytesBuilder = null; //todo
+    WaveBytesBuilderV1 waveBytesBuilder = new WaveBytesBuilderV1Impl();
 
     @Override
     public void write(String path, WaveObjectV1 waveObject) throws Exception {
