@@ -41,9 +41,9 @@ public class WaveBytesBuilderV1Impl implements WaveBytesBuilderV1 {
     private byte[] getRIFFChunk() throws IOException {
         ByteArrayOutputStream riffChunk = new ByteArrayOutputStream();
 
-        riffChunk.write(ByteArrayTools.getByteArrayFromString("RIFF")); //ChunkID
+        riffChunk.write(ByteArrayTools.getByteArrayFromString(RIFFIdentifier.RIFF.getName())); //ChunkID
         riffChunk.write(ByteArrayTools.getByteArrayFromInt(0,4)); //Chunk Size (whole file in this case)
-        riffChunk.write(ByteArrayTools.getByteArrayFromString("WAVE")); //Format
+        riffChunk.write(ByteArrayTools.getByteArrayFromString(RIFFIdentifier.WAVE.getName())); //Format
 
         return riffChunk.toByteArray();
     }
@@ -51,7 +51,7 @@ public class WaveBytesBuilderV1Impl implements WaveBytesBuilderV1 {
     private byte[] getFMTChunk() throws IOException {
         ByteArrayOutputStream fmtChunk = new ByteArrayOutputStream();
 
-        fmtChunk.write(ByteArrayTools.getByteArrayFromString("fmt "));  //ChunkID
+        fmtChunk.write(ByteArrayTools.getByteArrayFromString(RIFFIdentifier.FMT.getName()));  //ChunkID
         fmtChunk.write(ByteArrayTools.getByteArrayFromInt(16,4)); //Chunk Size (16 is the fix size for this Chunk with PCM)
         fmtChunk.write(ByteArrayTools.getByteArrayFromInt(1,2));  //AudioFormat (1 for PCM)
         fmtChunk.write(ByteArrayTools.getByteArrayFromInt(waveObject.getChannels(),2));  //Number of Channels
@@ -66,7 +66,7 @@ public class WaveBytesBuilderV1Impl implements WaveBytesBuilderV1 {
     private byte[] getDATAChunk() throws IOException {
         ByteArrayOutputStream dataChunk = new ByteArrayOutputStream();
 
-        dataChunk.write(ByteArrayTools.getByteArrayFromString("data"));  //ChunkID
+        dataChunk.write(ByteArrayTools.getByteArrayFromString(RIFFIdentifier.DATA.getName()));  //ChunkID
         dataChunk.write(ByteArrayTools.getByteArrayFromInt(waveObject.getAudioData().length,4)); //Chunk Size (= size of Audio Data)
         dataChunk.write(waveObject.getAudioData());  //Audio Data
 

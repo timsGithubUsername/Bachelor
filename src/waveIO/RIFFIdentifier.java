@@ -4,8 +4,8 @@ public enum RIFFIdentifier {
 
     RIFF("RIFF"),
     FMT("fmt "),
-    DATA("data");
-
+    DATA("data"),
+    WAVE("WAVE");
     private final String name;
 
     private RIFFIdentifier(final String name) {
