@@ -1,7 +1,7 @@
 package data;
 
 public class WaveObjectV1Impl implements WaveObjectV1 {
-    private final String name;
+    private String name;
     private final int channels;
     private final int sampleRate;
     private final int byteRate;
@@ -28,6 +28,11 @@ public class WaveObjectV1Impl implements WaveObjectV1 {
     }
 
     @Override
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
     public int getChannels() {
         return channels;
     }
@@ -48,7 +53,7 @@ public class WaveObjectV1Impl implements WaveObjectV1 {
     }
 
     @Override
-    public int getBitsPerSecond() {
+    public int getBitsPerSample() {
         return bitsPerSecond;
     }
 

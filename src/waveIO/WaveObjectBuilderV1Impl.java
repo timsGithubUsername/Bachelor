@@ -13,7 +13,6 @@ public class WaveObjectBuilderV1Impl implements WaveObjectBuilderV1 {
 
     /**
      * This Method creates an WaveObject base on a byte String and his name
-     *
      * @param data data array
      * @param name name of the WaveObject
      * @return The Wave Object corresponding to the data
@@ -130,9 +129,9 @@ public class WaveObjectBuilderV1Impl implements WaveObjectBuilderV1 {
         return JavaPCMTools.calculatePCMArray(audioDataTemp, bitsPerSampleTemp);
     }
 
-    private class WrongFileFormatException extends Exception {
+    private static class WrongFileFormatException extends Exception {
     }
 
-    private class WrongAudioFormatException extends Exception {
+    private static final class WrongAudioFormatException extends Exception {
     }
 }

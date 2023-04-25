@@ -5,11 +5,12 @@ package data;
  */
 public interface WaveObjectV1 {
     String getName();
+    void setName(String name);
     int getChannels();
     int getSampleRate();
     int getByteRate();
     int getBlockAlign();
-    int getBitsPerSecond();
+    int getBitsPerSample();
     byte[] getAudioData();
     double[] getJavaPCM();
 }
