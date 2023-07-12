@@ -8,23 +8,25 @@ import java.util.Arrays;
 
 public class PlotterPCM {
     public static BufferedImage plott(WaveObjectV1 wo, int sizeX, int sizeY) {
-        double[] javaPCM = wo.getJavaPCM();
-
         //calculate the stepsize for x
-        int stepsize = javaPCM.length / sizeX;
+        int stepsize = wo.getJavaPCM().length / sizeX;
+
+        //calculate Plott-Array
+        double[] plot = new double[sizeX];
+
+        for(int i = 0; i < plot.length; i++){
+            plot[i] = getWeightedAverageOf(Arrays.copyOfRange(wo.getJavaPCM(), i * stepsize, (i + 1) * stepsize - 1));
+        }
+
         //get the scale for y
-        double scale = sizeY / getHighestValue(javaPCM) / 2;
+        double scale = sizeY / getHighestValue(plot) / 2;
 
         BufferedImage output = new BufferedImage(sizeX, sizeY,BufferedImage.TYPE_4BYTE_ABGR);
 
-        double currentValue;
-
         for(int x = 0; x < sizeX; x++){
-            currentValue = getWeightedAverageOf(Arrays.copyOfRange(javaPCM, x * stepsize, (x + 1) * stepsize - 1));
-            //currentValue = javaPCM[x * stepsize];
 
             for(int y = 0; y < sizeY / 2; y++){
-                if(sizeY / 2 - y <= currentValue * scale){
+                if(sizeY / 2 - y <= plot[x] * scale){
                     output.setRGB(x,y, Color.BLACK.getRGB());
                     output.setRGB(x,sizeY - (y + 1), Color.BLACK.getRGB());
                 }
@@ -47,14 +49,6 @@ public class PlotterPCM {
         }
 
         return output;
-    }
-
-    private static double getAverageOf(double[] arr){
-        double output = 0;
-
-        for (double d:arr) output += d;
-
-        return output / arr.length;
     }
     private static double getWeightedAverageOf(double[] arr){
         double output = 0;

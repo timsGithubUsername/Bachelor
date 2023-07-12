@@ -13,8 +13,8 @@ public class Main {
         WaveObjectV1 wo;
 
         try {
-            //wo  = fr.read("C:\\Users\\timro\\IdeaProjects\\Bachelor\\rec\\grunge.wav");
-            wo  = fr.read("C:\\Users\\timro\\IdeaProjects\\Bachelor\\rec\\C418-Minecraft.wav");
+            wo  = fr.read("C:\\Users\\timro\\IdeaProjects\\Bachelor\\rec\\grunge.wav");
+            //wo  = fr.read("C:\\Users\\timro\\IdeaProjects\\Bachelor\\rec\\C418-Minecraft.wav");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
