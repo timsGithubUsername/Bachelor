@@ -53,8 +53,7 @@ public class PlotterPCM {
     private static double getWeightedAverageOf(double[] arr){
         double output = 0;
 
-        for(int i = 0; i < arr.length; i++)
-        output += arr[i] / (i + 1);
+        for(int i = 0; i < arr.length; i++) output += arr[i] / (i + 1);
 
         return output / arr.length;
     }
