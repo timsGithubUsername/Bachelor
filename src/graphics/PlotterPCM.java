@@ -13,25 +13,27 @@ public class PlotterPCM {
         //calculate the stepsize for x
         int stepsize = javaPCM.length / sizeX;
         //get the scale for y
-        int scale = (int) (getHighestValue(javaPCM) / sizeY) / 2;
+        double scale = sizeY / getHighestValue(javaPCM) / 2;
 
         BufferedImage output = new BufferedImage(sizeX, sizeY,BufferedImage.TYPE_4BYTE_ABGR);
 
         double currentValue;
 
         for(int x = 0; x < sizeX; x++){
-            currentValue = getAverageOf(Arrays.copyOfRange(javaPCM, x * stepsize, (x + 1) * stepsize - 1));
+            currentValue = getWeightedAverageOf(Arrays.copyOfRange(javaPCM, x * stepsize, (x + 1) * stepsize - 1));
+            //currentValue = javaPCM[x * stepsize];
 
-            for(int y = 0; y < sizeY; y++){
-                if (currentValue > 0 && y >= sizeY/2) {
-                    if (sizeY / 2 - y < currentValue * scale) output.setRGB(x,y, Color.BLACK.getRGB());
+            for(int y = 0; y < sizeY / 2; y++){
+                if(sizeY / 2 - y <= currentValue * scale){
+                    output.setRGB(x,y, Color.BLACK.getRGB());
+                    output.setRGB(x,sizeY - (y + 1), Color.BLACK.getRGB());
                 }
-                if (currentValue <= 0) {
-                    if (y > currentValue * scale) output.setRGB(x,y, Color.BLACK.getRGB());
+                else {
+                    output.setRGB(x, y, Color.white.getRGB());
+                    output.setRGB(x, sizeY - (y + 1), Color.white.getRGB());
                 }
             }
         }
-    //todo image is black
         return output;
     }
 
@@ -51,6 +53,14 @@ public class PlotterPCM {
         double output = 0;
 
         for (double d:arr) output += d;
+
+        return output / arr.length;
+    }
+    private static double getWeightedAverageOf(double[] arr){
+        double output = 0;
+
+        for(int i = 0; i < arr.length; i++)
+        output += arr[i] / (i + 1);
 
         return output / arr.length;
     }

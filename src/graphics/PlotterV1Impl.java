@@ -6,7 +6,7 @@ import data.WaveObjectV1;
 import java.awt.image.BufferedImage;
 
 public class PlotterV1Impl implements PlotterV1{
-    int sizeX=500, sizeY=100;
+    int sizeX=5000, sizeY=500;
     @Override
     public BufferedImage plotPCM(WaveObjectV1 wo) { return PlotterPCM.plott(wo, sizeX, sizeY); }
 
