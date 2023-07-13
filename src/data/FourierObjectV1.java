@@ -3,8 +3,10 @@ package data;
 /**
  * FourierObject holds all the data from a Fourier Transformation to inverse the transformation or manipulate the data
  */
-public interface FourierObjectV1 {
-    //todo
+public interface FourierObjectV1{
     String getName();
-    double[] getCoeff();
+    void setName(String name);
+    double[] getReal();
+    double[] getImg();
+    double[] getAmplitude();
 }
