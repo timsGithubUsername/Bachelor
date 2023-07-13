@@ -6,14 +6,25 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 
+/**
+ * class for plotting a pcm-wave
+ */
 public class PlotterPCM {
+    /**
+     * plott returns a buffered image with sizeX and sizeY of given WaveObject wo
+     * @param wo    WaveObject
+     * @param sizeX int, Length of Image
+     * @param sizeY int, Height of Image
+     * @return
+     */
     public static BufferedImage plott(WaveObjectV1 wo, int sizeX, int sizeY) {
         //calculate the stepsize for x
         int stepsize = wo.getJavaPCM().length / sizeX;
 
-        //calculate Plott-Array
+        //calculate Plott-Array (datapoints to plot)
         double[] plot = new double[sizeX];
 
+        //fill Plott-Array
         for(int i = 0; i < plot.length; i++){
             plot[i] = getWeightedAverageOf(Arrays.copyOfRange(wo.getJavaPCM(), i * stepsize, (i + 1) * stepsize - 1));
         }
@@ -23,8 +34,8 @@ public class PlotterPCM {
 
         BufferedImage output = new BufferedImage(sizeX, sizeY,BufferedImage.TYPE_4BYTE_ABGR);
 
+        //for each x and y plot if data is in range
         for(int x = 0; x < sizeX; x++){
-
             for(int y = 0; y < sizeY / 2; y++){
                 if(sizeY / 2 - y <= plot[x] * scale){
                     output.setRGB(x,y, Color.BLACK.getRGB());
@@ -39,6 +50,7 @@ public class PlotterPCM {
         return output;
     }
 
+    //
     private static double getHighestValue(double[] arr){
         double output = 0;
         double current;
