@@ -7,13 +7,16 @@ import data.WaveObjectV1;
 public class DFTV1Impl implements DFTV1{
     @Override
     public FourierObjectV1 dft(WaveObjectV1 wo) {
-        //int dataLength = wo.getJavaPCM().length;
-        int dataLength = 10000;
+        int dataLength = wo.getJavaPCM().length;
+        //int dataLength = 10000;
         double[] real = new double[dataLength], img = new double[dataLength], amplitude = new double[dataLength];
 
+        //console solution to display progress.
+        //todo solve this with gui
         Integer temp = 0;
         Integer newTemp = 0;
         System.out.println("Transform...");
+
         for(int output = 0; output < dataLength; output++) {//for each output
             newTemp = (100 * output) / dataLength;
             if(!temp.equals(newTemp)){
