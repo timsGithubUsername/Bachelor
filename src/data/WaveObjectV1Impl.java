@@ -10,6 +10,7 @@ public class WaveObjectV1Impl implements WaveObjectV1 {
     private final byte[] audioData;
     private final double[] javaPCM;
 
+    //todo wird die audio data aus javaPVM berechnet
     public WaveObjectV1Impl(String name, int channels, int sampleRate, int byteRate, int blockAlign,
                             int bitsPerSecond, byte[] audioData, double[] javaPCM){
         this.name = name;
