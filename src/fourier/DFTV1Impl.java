@@ -11,18 +11,7 @@ public class DFTV1Impl implements DFTV1{
         //int dataLength = 10000;
         double[] real = new double[dataLength], img = new double[dataLength], amplitude = new double[dataLength];
 
-        //console solution to display progress.
-        //todo solve this with gui
-        Integer tempPercent = 0;
-        Integer percent = 0;
-        System.out.println("Transform...");
-
         for(int output = 0; output < dataLength; output++) {//for each output
-            percent = (100 * output) / dataLength;
-            if(!tempPercent.equals(percent)){
-                System.out.println(tempPercent+" %");
-                tempPercent = percent;
-            }
             real[output] = 0;
             img[output] = 0;
             for(int input = 0; input < wo.getJavaPCM().length; input++){//do for every input
@@ -35,8 +24,25 @@ public class DFTV1Impl implements DFTV1{
     }
 
     @Override
-    public WaveObjectV1 idft(FourierObjectV1 fo) {
+    public WaveObjectV1 idftReal(FourierObjectV1 fo) {
         //x[n] = 1/N sum^N-1_k=0 X[k] exp(i 2 PI k n / N)
+        //cos(x) + i*sin(x) = exp(i x)
+        //=> x[n] = 1/N sum^N-1_k=0 x[k](cos(2 PI k n / N) + i * sin(2 PI k n / N)
+        int length = fo.getAmplitude().length; //N
+        double[] output = new double[length];
+        double temp;
+        Complex current;
+
+        for(int n = 0; n < length; n++){
+            temp = 0;
+
+            for(int k = 0; k < length; k++) {
+                current = new Complex(fo.getReal()[k], fo.getImg()[k]);
+                temp += current.times(new Complex(Math.cos(2 * Math.PI * k * n / length), Math.sin(2 * Math.PI * k * n / length))).getReal();
+            }
+            output[n] = temp / length;
+        }
+
         return null;
     }
 
