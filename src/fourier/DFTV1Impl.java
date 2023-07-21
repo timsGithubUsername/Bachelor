@@ -13,15 +13,15 @@ public class DFTV1Impl implements DFTV1{
 
         //console solution to display progress.
         //todo solve this with gui
-        Integer temp = 0;
-        Integer newTemp = 0;
+        Integer tempPercent = 0;
+        Integer percent = 0;
         System.out.println("Transform...");
 
         for(int output = 0; output < dataLength; output++) {//for each output
-            newTemp = (100 * output) / dataLength;
-            if(!temp.equals(newTemp)){
-                System.out.println(temp+" %");
-                temp = newTemp;
+            percent = (100 * output) / dataLength;
+            if(!tempPercent.equals(percent)){
+                System.out.println(tempPercent+" %");
+                tempPercent = percent;
             }
             real[output] = 0;
             img[output] = 0;
@@ -32,6 +32,12 @@ public class DFTV1Impl implements DFTV1{
         }
 
         return new FourierObjectV1Impl(wo.getName() + "Fourier", real, img, calcAmplitude(real, img));
+    }
+
+    @Override
+    public WaveObjectV1 idft(FourierObjectV1 fo) {
+        //x[n] = 1/N sum^N-1_k=0 X[k] exp(i 2 PI k n / N)
+        return null;
     }
 
     private double[] calcAmplitude(double[] real, double[] img){
