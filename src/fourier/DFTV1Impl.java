@@ -1,8 +1,6 @@
 package fourier;
 
-import data.FourierObjectV1;
-import data.FourierObjectV1Impl;
-import data.WaveObjectV1;
+import data.*;
 
 public class DFTV1Impl implements DFTV1{
     @Override
@@ -20,11 +18,13 @@ public class DFTV1Impl implements DFTV1{
             }
         }
 
-        return new FourierObjectV1Impl(wo.getName() + "Fourier", real, img, calcAmplitude(real, img));
+        return new WaveFourierObjekt(wo.getName() + "Fourier", wo.getChannels(), wo.getSampleRate(),
+                                    wo.getByteRate(), wo.getBlockAlign(), wo.getBitsPerSample(), wo.getAudioData(),
+                                    wo.getJavaPCM(), real, img, calcAmplitude(real, img));
     }
 
     @Override
-    public WaveObjectV1 idftReal(FourierObjectV1 fo) {
+    public WaveObjectV1 idftReal(WaveFourierObjekt fo) {
         //x[n] = 1/N sum^N-1_k=0 X[k] exp(i 2 PI k n / N)
         //cos(x) + i*sin(x) = exp(i x)
         //=> x[n] = 1/N sum^N-1_k=0 x[k](cos(2 PI k n / N) + i * sin(2 PI k n / N)
@@ -43,7 +43,8 @@ public class DFTV1Impl implements DFTV1{
             output[n] = temp / length;
         }
 
-        return null;
+        return new WaveObjectV1Impl(fo.getName(), fo.getChannels(),fo.getSampleRate(),fo.getByteRate(),
+                fo.getBlockAlign(),fo.getBitsPerSample(),fo.getAudioData(),output);
     }
 
     private double[] calcAmplitude(double[] real, double[] img){
