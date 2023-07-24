@@ -19,6 +19,7 @@ public class PlotterFourier {
         //calculate the stepsize for x
         int stepsize = fo.getAmplitude().length / sizeX;
 
+        System.out.println(getHighestValue(fo.getAmplitude()));
         double[] plottData = new double[sizeX];
 
         for(int i = 0; i < plottData.length; i++){
