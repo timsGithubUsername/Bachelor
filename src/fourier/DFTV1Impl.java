@@ -31,14 +31,15 @@ public class DFTV1Impl implements DFTV1{
         int length = fo.getAmplitude().length; //N
         double[] output = new double[length];
         double temp;
-        Complex current;
+        ComplexMutable current = new ComplexMutableImpl(0,0);
 
         for(int n = 0; n < length; n++){
             temp = 0;
 
             for(int k = 0; k < length; k++) {
-                current = new Complex(fo.getReal()[k], fo.getImg()[k]);
-                temp += current.times(new Complex(Math.cos(2 * Math.PI * k * n / length), Math.sin(2 * Math.PI * k * n / length))).getReal();
+                current.setReal(fo.getReal()[k]);
+                current.setImaginary(fo.getImg()[k]);
+                temp += current.times(new ComplexMutableImpl(Math.cos(2 * Math.PI * k * n / length), Math.sin(2 * Math.PI * k * n / length))).getReal();
             }
             output[n] = temp / length;
         }

@@ -5,9 +5,9 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ComplexTest {
-    Complex comp1 = new Complex(1,1);
-    Complex comp2 = new Complex(2,2);
-    Complex comp3 = new Complex(3,3);
+    ComplexMutable comp1 = new ComplexMutable(1,1);
+    ComplexMutable comp2 = new ComplexMutable(2,2);
+    ComplexMutable comp3 = new ComplexMutable(3,3);
 
     @Test
     void getImaginary() {
@@ -32,7 +32,7 @@ class ComplexTest {
 
     @Test
     void add() {
-        Complex comp4 = comp1.add(comp2);
+        ComplexMutable comp4 = comp1.add(comp2);
 
         assertEquals(comp4.getReal(), 3);
         assertEquals(comp4.getImaginary(), 3);
@@ -55,12 +55,12 @@ class ComplexTest {
 
     @Test
     void times() {
-        Complex comp4 = comp1.times(comp2);
+        ComplexMutable comp4 = comp1.times(comp2);
 
         assertEquals(comp4.getImaginary(), 2 + 2);
         assertEquals(comp4.getReal(), 2 - 2);
 
-        comp4 = comp2.times(new Complex(2, 0));
+        comp4 = comp2.times(new ComplexMutable(2, 0));
 
         assertEquals(comp4.getReal(), comp2.getReal() * 2);
         assertEquals(comp4.getImaginary(), comp2.getImaginary() * 2);

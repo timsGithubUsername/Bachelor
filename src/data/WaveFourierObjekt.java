@@ -18,6 +18,20 @@ public class WaveFourierObjekt implements FourierObjectV1, WaveObjectV1{
         this.img = img;
         this.amplitude = amplitude;
     }
+    public WaveFourierObjekt(WaveObjectV1 wo, double[] real,double[] img,double[] amplitude){
+        this.name = wo.getName();
+        this.channels = wo.getChannels();
+        this. sampleRate = wo.getSampleRate();
+        this.byteRate = wo.getByteRate();
+        this.blockAlign = wo.getBlockAlign();
+        this.bitsPerSecond = wo.getBitsPerSample();
+        this.audioData = wo.getAudioData();
+        this.javaPCM = wo.getJavaPCM();
+        this.real = real;
+        this.img = img;
+        this.amplitude = amplitude;
+    }
+
     @Override
     public String getName() {
         return name;
