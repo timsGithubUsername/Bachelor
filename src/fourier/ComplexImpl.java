@@ -35,30 +35,12 @@ public class ComplexImpl implements Complex{
 
     @Override
     public Complex add(Complex number) {
-        real += number.getReal();
-        imaginary += number.getImaginary();
-        calcMagnitude();
-
         return new ComplexImpl(real + number.getReal(), imaginary + number.getImaginary());
-    }
-    public Complex addMutable(Complex number) {
-        real += number.getReal();
-        imaginary += number.getImaginary();
-        calcMagnitude();
-
-        return this;
     }
 
     @Override
     public Complex substract(Complex number) {
         return new ComplexImpl(real - number.getReal(), imaginary - number.getImaginary());
-    }
-    public Complex substractMutable(Complex number) {
-        real -= number.getReal();
-        imaginary -= number.getImaginary();
-        calcMagnitude();
-
-        return this;
     }
 
     @Override
@@ -76,13 +58,6 @@ public class ComplexImpl implements Complex{
         return new ComplexImpl(real * number.getReal() - imaginary * number.getImaginary(),
                 imaginary * number.getReal() + real * number.getImaginary());
     }
-    public Complex timesMutable(Complex number) {
-        real = real * number.getReal() - imaginary * number.getImaginary();
-        imaginary = imaginary * number.getReal() + real * number.getImaginary();
-        calcMagnitude();
-
-        return this;
-    }
 
     @Override
     public Complex times(double number) {
@@ -97,9 +72,15 @@ public class ComplexImpl implements Complex{
         Complex output = new ComplexImpl(real, imaginary);
 
         for(int i = 1; i < power; i++){
-            output.timesMutable(output);
+            output = output.times(this);
         }
 
         return output;
+    }
+
+    @Override
+    public String toString(){
+        if(imaginary >= 0) return real+"+"+imaginary+"i";
+        else return real+""+imaginary+"i";
     }
 }
