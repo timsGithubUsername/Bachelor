@@ -1,7 +1,6 @@
 package graphics;
 
-import data.FourierObjectV1;
-import data.WaveFourierObjekt;
+import data.SoundObjectV1;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -13,18 +12,18 @@ public class PlotterFourierV2 {
     /**
      * plott returns a buffered image with sizeX and sizeY of given FourierObject fo
      *
-     * @param fo    FourierObject
+     * @param so    FourierObject
      * @param sizeX int, Length of Image
      * @param sizeY int, Height of Image
      * @return
      */
-    public static BufferedImage plott(WaveFourierObjekt fo, int sizeX, int sizeY) {
+    public static BufferedImage plott(SoundObjectV1 so, int sizeX, int sizeY) {
         double[] plottData = new double[sizeX];
         int step = (int) (maxFrequency / sizeX);
-        int binStep = step * fo.getAmplitude().length / fo.getSampleRate();
+        int binStep = step * so.getMagnitude().length / so.getSampleRate();
 
         for (int i = 0; i < plottData.length; i++) {
-            plottData[i] = getHighestValue(Arrays.copyOfRange(fo.getAmplitude(),i,i+binStep));
+            plottData[i] = getHighestValue(Arrays.copyOfRange(so.getMagnitude(),i,i+binStep));
         }
 
         //get the scale for y

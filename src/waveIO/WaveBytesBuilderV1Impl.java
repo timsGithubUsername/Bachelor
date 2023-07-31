@@ -1,22 +1,22 @@
 package waveIO;
 
-import data.WaveObjectV1;
+import data.SoundObjectV1;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 public class WaveBytesBuilderV1Impl implements WaveBytesBuilderV1 {
-    private WaveObjectV1 waveObject;
+    private SoundObjectV1 soundObject;
 
     /**
      * This Method creates an Byte Array based on a WaveObject
-     * @param waveObject The WaveObject, which should be transformed in a Wave Byte Array
+     * @param soundObject The WaveObject, which should be transformed in a Wave Byte Array
      * @return A Byte Array corresponding to a Wave File
      * @throws IOException If something goes wrong with the ByteArrayOutputStreams. This shouldnt happen.
      */
     @Override
-    public byte[] createWaveBytes(WaveObjectV1 waveObject) throws IOException {
-        this.waveObject = waveObject;
+    public byte[] createWaveBytes(SoundObjectV1 soundObject) throws IOException {
+        this.soundObject = soundObject;
         ByteArrayOutputStream waveObjectBytes = new ByteArrayOutputStream();
         byte[] output;
 
@@ -54,11 +54,11 @@ public class WaveBytesBuilderV1Impl implements WaveBytesBuilderV1 {
         fmtChunk.write(ByteArrayTools.getByteArrayFromString(RIFFIdentifier.FMT.getName()));  //ChunkID
         fmtChunk.write(ByteArrayTools.getByteArrayFromInt(16,4)); //Chunk Size (16 is the fix size for this Chunk with PCM)
         fmtChunk.write(ByteArrayTools.getByteArrayFromInt(1,2));  //AudioFormat (1 for PCM)
-        fmtChunk.write(ByteArrayTools.getByteArrayFromInt(waveObject.getChannels(),2));  //Number of Channels
-        fmtChunk.write(ByteArrayTools.getByteArrayFromInt(waveObject.getSampleRate(),4));  //Sample rate
-        fmtChunk.write(ByteArrayTools.getByteArrayFromInt(waveObject.getByteRate(),4));  //Byte rate
-        fmtChunk.write(ByteArrayTools.getByteArrayFromInt(waveObject.getBlockAlign(),2));  //Block align
-        fmtChunk.write(ByteArrayTools.getByteArrayFromInt(waveObject.getBitsPerSample(),2));  //Block align
+        fmtChunk.write(ByteArrayTools.getByteArrayFromInt(soundObject.getChannels(),2));  //Number of Channels
+        fmtChunk.write(ByteArrayTools.getByteArrayFromInt(soundObject.getSampleRate(),4));  //Sample rate
+        fmtChunk.write(ByteArrayTools.getByteArrayFromInt(soundObject.getByteRate(),4));  //Byte rate
+        fmtChunk.write(ByteArrayTools.getByteArrayFromInt(soundObject.getBlockAlign(),2));  //Block align
+        fmtChunk.write(ByteArrayTools.getByteArrayFromInt(soundObject.getBitsPerSample(),2));  //Block align
 
         return fmtChunk.toByteArray();
     }
@@ -67,8 +67,8 @@ public class WaveBytesBuilderV1Impl implements WaveBytesBuilderV1 {
         ByteArrayOutputStream dataChunk = new ByteArrayOutputStream();
 
         dataChunk.write(ByteArrayTools.getByteArrayFromString(RIFFIdentifier.DATA.getName()));  //ChunkID
-        dataChunk.write(ByteArrayTools.getByteArrayFromInt(waveObject.getAudioData().length,4)); //Chunk Size (= size of Audio Data)
-        dataChunk.write(waveObject.getAudioData());  //Audio Data
+        dataChunk.write(ByteArrayTools.getByteArrayFromInt(soundObject.getAudioData().length,4)); //Chunk Size (= size of Audio Data)
+        dataChunk.write(soundObject.getAudioData());  //Audio Data
 
         return dataChunk.toByteArray();
     }

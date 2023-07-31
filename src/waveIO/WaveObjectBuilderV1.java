@@ -1,10 +1,10 @@
 package waveIO;
 
-import data.WaveObjectV1;
+import data.SoundObjectV1;
 
 /**
  * WaveObjectBuilder creates a WaveObject from a byte array
  */
 public interface WaveObjectBuilderV1 {
-    WaveObjectV1 createWaveObject(byte[] data, String name) throws Exception;
+    SoundObjectV1 createWaveObject(byte[] data, String name) throws Exception;
 }

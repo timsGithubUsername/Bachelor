@@ -1,11 +1,10 @@
 package waveIO;
 
-import data.WaveObjectV1;
+import data.SoundObjectV1;
 
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
 
 public class FileReaderV1Impl implements FileReaderV1{
     WaveObjectBuilderV1 waveObjectBuilder = new WaveObjectBuilderV1Impl();
@@ -17,7 +16,7 @@ public class FileReaderV1Impl implements FileReaderV1{
      * @throws Exception
      */
     @Override
-    public WaveObjectV1 read(String path) throws Exception {
+    public SoundObjectV1 read(String path) throws Exception {
         byte[] fileBytes = Files.readAllBytes(Paths.get(path));
         File audioFile = new File(path);
 

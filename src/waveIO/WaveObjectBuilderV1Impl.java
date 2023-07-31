@@ -1,7 +1,7 @@
 package waveIO;
 
-import data.WaveObjectV1;
-import data.WaveObjectV1Impl;
+import data.SoundObjectV1;
+import data.SoundObjectV1Impl;
 
 import java.util.Arrays;
 
@@ -18,7 +18,7 @@ public class WaveObjectBuilderV1Impl implements WaveObjectBuilderV1 {
      * @return The Wave Object corresponding to the data
      */
     @Override
-    public WaveObjectV1 createWaveObject(byte[] data, String name) throws Exception {
+    public SoundObjectV1 createWaveObject(byte[] data, String name) throws Exception {
         pointer = 0;
         this.data = data;
 
@@ -45,14 +45,13 @@ public class WaveObjectBuilderV1Impl implements WaveObjectBuilderV1 {
         //
         //reach next chunk          +2
         //then get audio data
-        return new WaveObjectV1Impl(name,
+        return new SoundObjectV1Impl(name,
                 getChannelsFromData(),
                 getSampleRateFromData(),
                 getByteRateFromData(),
                 getBlockAlignFromData(),
                 getBitsPerSampleFromData(),
-                getAudioData(),
-                calculateJavaPCM());
+                getAudioData());
     }
 
     private void setPointerToNextChunk() {
@@ -123,10 +122,6 @@ public class WaveObjectBuilderV1Impl implements WaveObjectBuilderV1 {
 
         audioDataTemp = Arrays.copyOfRange(data, pointer, data.length);
         return audioDataTemp;
-    }
-
-    private double[] calculateJavaPCM() {
-        return JavaPCMTools.calculatePCMArray(audioDataTemp, bitsPerSampleTemp);
     }
 
     private static class WrongFileFormatException extends Exception {

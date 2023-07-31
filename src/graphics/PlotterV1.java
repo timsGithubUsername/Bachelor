@@ -1,7 +1,6 @@
 package graphics;
 
-import data.FourierObjectV1;
-import data.WaveObjectV1;
+import data.SoundObjectV1;
 
 import java.awt.image.BufferedImage;
 
@@ -10,9 +9,9 @@ import java.awt.image.BufferedImage;
  */
 public interface PlotterV1 {
 
-    BufferedImage plotPCM(WaveObjectV1 wo);
+    BufferedImage plotPCM(SoundObjectV1 so);
 
-    BufferedImage plotCoeff(FourierObjectV1 fo);
+    BufferedImage plotCoeff(SoundObjectV1 so);
 
     void setSize(int x, int y);
 }

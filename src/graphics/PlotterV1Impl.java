@@ -1,19 +1,17 @@
 package graphics;
 
-import data.FourierObjectV1;
-import data.WaveFourierObjekt;
-import data.WaveObjectV1;
+import data.SoundObjectV1;
 
 import java.awt.image.BufferedImage;
 
 public class PlotterV1Impl implements PlotterV1{
     int sizeX=5000, sizeY=500;
     @Override
-    public BufferedImage plotPCM(WaveObjectV1 wo) { return PlotterPCM.plott(wo, sizeX, sizeY); }
+    public BufferedImage plotPCM(SoundObjectV1 so) { return PlotterPCM.plott(so, sizeX, sizeY); }
 
     @Override
-    public BufferedImage plotCoeff(FourierObjectV1 fo) {
-        return PlotterFourierV2.plott((WaveFourierObjekt) fo,sizeX,sizeY);
+    public BufferedImage plotCoeff(SoundObjectV1 so) {
+        return PlotterFourierV2.plott(so,sizeX,sizeY);
     }
 
     @Override

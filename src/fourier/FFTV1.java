@@ -1,9 +1,8 @@
 package fourier;
 
-import data.FourierObjectV1;
-import data.WaveObjectV1;
+import data.SoundObjectV1;
 
 public interface FFTV1 {
-    FourierObjectV1 fft(WaveObjectV1 wo);
-    WaveObjectV1 ifft(FourierObjectV1 fo);
+    void fft(SoundObjectV1 so);
+    void ifft(SoundObjectV1 so);
 }

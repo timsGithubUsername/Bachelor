@@ -109,12 +109,15 @@ public class SoundObjectV1Impl implements SoundObjectV1{
 
         if(channels > 1){
             for(int i = 0; i < newAudioData.length;) {
-                ByteArrayTools.fillByteArrayWithArray(newAudioData, Arrays.copyOfRange(audioData, i*channels, i*channels+bitsPerSample), i*bitsPerSample);
+                if(i*channels+bitsPerSample >= audioData.length || i+bitsPerSample >= newAudioData.length) break;
+
+                ByteArrayTools.fillByteArrayWithArray(newAudioData, Arrays.copyOfRange(audioData, i*channels, i*channels+bitsPerSample), i);
                 i += bitsPerSample;
             }
             byteRate = byteRate/channels;
             blockAlign = blockAlign/channels;
             channels = 1;
+            audioData = newAudioData;
         }
     }
 

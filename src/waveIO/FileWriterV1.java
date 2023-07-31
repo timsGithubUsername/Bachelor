@@ -1,10 +1,10 @@
 package waveIO;
 
-import data.WaveObjectV1;
+import data.SoundObjectV1;
 
 /**
  * FileReader writes a file wave file from a WaveObject or throws an exception
  */
 public interface FileWriterV1 {
-    void write(String path, WaveObjectV1 waveObject) throws Exception;
+    void write(String path, SoundObjectV1 soundObjectV1) throws Exception;
 }

@@ -1,6 +1,6 @@
 package graphics;
 
-import data.WaveObjectV1;
+import data.SoundObjectV1;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -12,21 +12,21 @@ import java.util.Arrays;
 public class PlotterPCM {
     /**
      * plott returns a buffered image with sizeX and sizeY of given WaveObject wo
-     * @param wo    WaveObject
+     * @param so    WaveObject
      * @param sizeX int, Length of Image
      * @param sizeY int, Height of Image
      * @return
      */
-    public static BufferedImage plott(WaveObjectV1 wo, int sizeX, int sizeY) {
+    public static BufferedImage plott(SoundObjectV1 so, int sizeX, int sizeY) {
         //calculate the stepsize for x
-        int stepsize = wo.getJavaPCM().length / sizeX;
+        int stepsize = so.getJavaPCM().length / sizeX;
 
         //calculate Plott-Array (datapoints to plot)
         double[] plot = new double[sizeX];
 
         //fill Plott-Array
         for(int i = 0; i < plot.length; i++){
-            plot[i] = getWeightedAverageOf(Arrays.copyOfRange(wo.getJavaPCM(), i * stepsize, (i + 1) * stepsize - 1));
+            plot[i] = getWeightedAverageOf(Arrays.copyOfRange(so.getJavaPCM(), i * stepsize, (i + 1) * stepsize - 1));
         }
 
         //get the scale for y
