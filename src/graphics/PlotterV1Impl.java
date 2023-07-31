@@ -1,6 +1,7 @@
 package graphics;
 
 import data.FourierObjectV1;
+import data.WaveFourierObjekt;
 import data.WaveObjectV1;
 
 import java.awt.image.BufferedImage;
@@ -12,7 +13,7 @@ public class PlotterV1Impl implements PlotterV1{
 
     @Override
     public BufferedImage plotCoeff(FourierObjectV1 fo) {
-        return PlotterFourier.plott(fo,sizeX,sizeY);
+        return PlotterFourierV2.plott((WaveFourierObjekt) fo,sizeX,sizeY);
     }
 
     @Override

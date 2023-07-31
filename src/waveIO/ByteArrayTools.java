@@ -59,4 +59,8 @@ public class ByteArrayTools {
     public static byte[] getByteArrayFromString(String data){
         return data.getBytes();
     }
+
+    public static void fillByteArrayWithArray(byte[] toFill, byte[] filler, int start){
+        for(int i = 0; i < filler.length; i++) toFill[i + start] = filler[i];
+    }
 }

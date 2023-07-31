@@ -8,7 +8,7 @@ public class FFTV1Impl implements FFTV1{
     @Override
     public FourierObjectV1 fft(WaveObjectV1 wo) {
         double[] data = fillArray(wo.getJavaPCM());
-        Complex[] output = doFFT(data);
+        Complex[] output = doFFT(data, true);
         double[] real, imaginary, magnitude;
 
         real = getReal(output);
@@ -42,12 +42,15 @@ public class FFTV1Impl implements FFTV1{
         return real;
     }
 
-    private Complex[] doFFT(double[] data){
+    //mode true: fft, false: ifft
+    private Complex[] doFFT(double[] data, boolean mode){
         if(data.length == 1) {
             return new Complex[]{new ComplexImpl(data[0], 0)};
         }
 
-        Complex angle = new ComplexImpl(Math.cos(2 * Math.PI / data.length), Math.sin(2 * Math.PI / data.length));
+        Complex angle;
+        if(mode) angle = new ComplexImpl(Math.cos(2 * Math.PI / data.length), Math.sin(2 * Math.PI / data.length));
+        else angle = new ComplexImpl(Math.cos(-2 * Math.PI / data.length), Math.sin(-2 * Math.PI / data.length)).times(1.0/data.length);
 
         double[] dataEven = new double[data.length/2], dataOdd = new double[data.length/2];
         Complex[] outputEven, outputOdd, output = new ComplexImpl[data.length];
@@ -57,8 +60,8 @@ public class FFTV1Impl implements FFTV1{
             dataOdd[i] = data[i*2+1];
         }
 
-        outputEven = doFFT(dataEven);
-        outputOdd = doFFT(dataOdd);
+        outputEven = doFFT(dataEven, mode);
+        outputOdd = doFFT(dataOdd, mode);
 
         for(int i = 0; i < data.length/2; i++){
             output[i] = outputEven[i].add(outputOdd[i].times(angle.pow(i)));

@@ -17,19 +17,38 @@ public class JavaPCMTools {
         int bytesPerSample = bitsPerSample / 8;
         double[] output = new double[audioData.length / bytesPerSample];
 
-        fillOuputArray(audioData, output, bytesPerSample);
+        fillPCMArray(audioData, output, bytesPerSample);
 
         return output;
     }
 
     //this method calculates a sample from all bytes for that sample
-    private static void fillOuputArray(byte[] audioData, double[] output, int bytesPerSample) {
+    private static void fillPCMArray(byte[] audioData, double[] output, int bytesPerSample) {
         int currentPosition;
 
         for (int sample = 0; sample < output.length; sample++) {
             currentPosition = sample * bytesPerSample;
 
             output[sample] = ByteArrayTools.getIntFromByteArray(Arrays.copyOfRange(audioData, currentPosition, currentPosition + bytesPerSample));
+        }
+    }
+
+    public static byte[] calculateDataArray(double[] pcmData, int bitsPerSample){
+        int bytesPerSample = bitsPerSample / 8;
+        byte[] output = new byte[pcmData.length * bytesPerSample];
+
+        fillByteArray(pcmData, output, bytesPerSample);
+
+        return output;
+    }
+
+    private static void fillByteArray(double[] pcmData, byte[] output, int bytesPerSample) {
+        int currentPosition;
+
+        for (int sample = 0; sample < output.length; sample++) {
+            currentPosition = sample * bytesPerSample;
+
+            ByteArrayTools.fillByteArrayWithArray(output, ByteArrayTools.getByteArrayFromInt((int) pcmData[sample],bytesPerSample), currentPosition);
         }
     }
 }
