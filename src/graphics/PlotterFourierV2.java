@@ -18,12 +18,13 @@ public class PlotterFourierV2 {
      * @return
      */
     public static BufferedImage plott(SoundObjectV1 so, int sizeX, int sizeY) {
+        maxFrequency = so.getMagnitude().length;
         double[] plottData = new double[sizeX];
         int step = (int) (maxFrequency / sizeX);
         int binStep = step * so.getMagnitude().length / so.getSampleRate();
 
         for (int i = 0; i < plottData.length; i++) {
-            plottData[i] = getHighestValue(Arrays.copyOfRange(so.getMagnitude(),i,i+binStep));
+            plottData[i] = getHighestValue(Arrays.copyOfRange(so.getMagnitude(),i,i+step));
         }
 
         //get the scale for y
@@ -34,7 +35,7 @@ public class PlotterFourierV2 {
         //for each x and y plot if data is in range
         drawData(sizeX, sizeY, plottData, scale, output);
 
-        drawGrid(sizeX, sizeY, step, output);
+        //drawGrid(sizeX, sizeY, step, output);
 
         return output;
     }

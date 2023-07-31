@@ -45,7 +45,7 @@ public class JavaPCMTools {
     private static void fillByteArray(double[] pcmData, byte[] output, int bytesPerSample) {
         int currentPosition;
 
-        for (int sample = 0; sample < output.length; sample++) {
+        for (int sample = 0; sample < pcmData.length; sample++) {
             currentPosition = sample * bytesPerSample;
 
             ByteArrayTools.fillByteArrayWithArray(output, ByteArrayTools.getByteArrayFromInt((int) pcmData[sample],bytesPerSample), currentPosition);

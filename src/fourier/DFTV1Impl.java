@@ -21,23 +21,23 @@ public class DFTV1Impl implements DFTV1{
     }
 
     @Override
-    public void idftReal(SoundObjectV1 so) {
+    public void idft(SoundObjectV1 so) {
         //x[n] = 1/N sum^N-1_k=0 X[k] exp(i 2 PI k n / N)
         //cos(x) + i*sin(x) = exp(i x)
         //=> x[n] = 1/N sum^N-1_k=0 x[k](cos(2 PI k n / N) + i * sin(2 PI k n / N)
         int length = so.getFrequency().length; //N
-        double[] output = new double[length];
-        double temp;
+        Complex[] output = new Complex[length];
+        Complex temp;
         Complex current;
 
         for(int n = 0; n < length; n++){
-            temp = 0;
+            temp = new ComplexImpl();
 
             for(int k = 0; k < length; k++) {
                 current = so.getFrequency()[k];
-                temp += current.times(new ComplexImpl(Math.cos(2 * Math.PI * k * n / length), Math.sin(2 * Math.PI * k * n / length))).getReal();
+                temp.add(current.times(new ComplexImpl(Math.cos(2 * Math.PI * k * n / length), Math.sin(2 * Math.PI * k * n / length))));
             }
-            output[n] = temp / length;
+            output[n] = temp.times(1.0/length);
         }
 
         so.setPCMFromIFFT(output);

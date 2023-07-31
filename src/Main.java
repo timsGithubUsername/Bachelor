@@ -20,13 +20,18 @@ public class Main {
         SoundObjectV1 so;
 
         try {
-            so  = fr.read("C:\\Users\\timro\\IdeaProjects\\Bachelor\\rec\\C418-Minecraft.wav");
+            //so  = fr.read("C:\\Users\\timro\\IdeaProjects\\Bachelor\\rec\\C418-Minecraft.wav");
+            so  = fr.read("C:\\Users\\timro\\IdeaProjects\\Bachelor\\rec\\C-small.wav");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        so.setName("c418-test.wav");
+        so.setName("c-test.wav");
+
+        fft.fft(so);
+        fft.ifft(so);
 
         plotter.plotPCM(so);
+        plotter.plotCoeff(so);
 
         try {
             fw.write("C:\\Users\\timro\\IdeaProjects\\Bachelor\\rec\\", so);

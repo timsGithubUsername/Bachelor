@@ -21,6 +21,6 @@ public interface SoundObjectV1 {
     double[] getJavaPCM();
 
     //manipulation
-    void setPCMFromIFFT(double[] pcm);
+    void setPCMFromIFFT(Complex[] pcm);
     void changeSpeed(double factor);
 }

@@ -5,6 +5,7 @@ import waveIO.ByteArrayTools;
 import waveIO.JavaPCMTools;
 
 import java.util.Arrays;
+import java.util.Date;
 
 public class SoundObjectV1Impl implements SoundObjectV1{
     private String name;
@@ -24,8 +25,8 @@ public class SoundObjectV1Impl implements SoundObjectV1{
         this.audioData = audioData;
         this.pcmData = pcmData;
 
-        reduceChannels();
         setPcmData();
+        reduceChannels();
     }
 
     private void setPcmData() {
@@ -55,6 +56,7 @@ public class SoundObjectV1Impl implements SoundObjectV1{
     }
 
     private void calcMagnitude() {
+        if(magnitude == null) magnitude = new double[frequency.length];
         for(int i = 0; i < frequency.length; i++) magnitude[i] = frequency[i].getMagnitude();
     }
 
@@ -99,25 +101,26 @@ public class SoundObjectV1Impl implements SoundObjectV1{
     }
 
     @Override
-    public void setPCMFromIFFT(double[] pcm) {
-        for(int i = 0; i < pcmData.length; i++) pcmData[i] = pcm[i];
+    public void setPCMFromIFFT(Complex[] pcm) {
+        int n = pcm.length;
+        for(int i = 0; i < pcmData.length; i++) pcmData[i] = pcm[i].times(1.0/n).getReal();
         audioData = JavaPCMTools.calculateDataArray(pcmData, bitsPerSample);
     }
 
     private void reduceChannels(){
-        byte[] newAudioData = new byte[audioData.length/channels];
+        double[] newPCMData = new double[pcmData.length/channels - pcmData.length/channels % channels];
 
         if(channels > 1){
-            for(int i = 0; i < newAudioData.length;) {
-                if(i*channels+bitsPerSample >= audioData.length || i+bitsPerSample >= newAudioData.length) break;
-
-                ByteArrayTools.fillByteArrayWithArray(newAudioData, Arrays.copyOfRange(audioData, i*channels, i*channels+bitsPerSample), i);
-                i += bitsPerSample;
+            for(int i = 0; i < newPCMData.length; i++) {
+                newPCMData[i] = pcmData[channels * i];
             }
+
+            pcmData = newPCMData;
+            audioData = JavaPCMTools.calculateDataArray(pcmData, bitsPerSample);
+
             byteRate = byteRate/channels;
             blockAlign = blockAlign/channels;
             channels = 1;
-            audioData = newAudioData;
         }
     }
 
