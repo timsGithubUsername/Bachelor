@@ -18,6 +18,7 @@ public class PlotterFourierV2 {
      * @return
      */
     public static BufferedImage plott(SoundObjectV1 so, int sizeX, int sizeY) {
+        //todo implement binstep again
         maxFrequency = so.getMagnitude().length;
         double[] plottData = new double[sizeX];
         int step = (int) (maxFrequency / sizeX);

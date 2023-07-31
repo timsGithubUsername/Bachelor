@@ -5,6 +5,7 @@ import fourier.FFTV1;
 import fourier.FFTV1Impl;
 import graphics.PlotterV1;
 import graphics.PlotterV1Impl;
+import manipulation.ManipulateFFT;
 import waveIO.FileReaderV1;
 import waveIO.FileReaderV1Impl;
 import waveIO.FileWriterV1;
@@ -25,12 +26,9 @@ public class Main {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        so.setName("c-test.wav");
 
-        //fft.fft(so);
-        //fft.ifft(so);
+        ManipulateFFT.changeSpeedFFT(so, 1.5);
 
-        so.changeSpeed(2);
         plotter.plotPCM(so);
         //plotter.plotCoeff(so);
 
