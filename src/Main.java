@@ -27,11 +27,12 @@ public class Main {
         }
         so.setName("c-test.wav");
 
-        fft.fft(so);
-        fft.ifft(so);
+        //fft.fft(so);
+        //fft.ifft(so);
 
+        so.changeSpeed(2);
         plotter.plotPCM(so);
-        plotter.plotCoeff(so);
+        //plotter.plotCoeff(so);
 
         try {
             fw.write("C:\\Users\\timro\\IdeaProjects\\Bachelor\\rec\\", so);

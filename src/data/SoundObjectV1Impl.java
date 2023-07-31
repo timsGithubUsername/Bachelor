@@ -126,6 +126,6 @@ public class SoundObjectV1Impl implements SoundObjectV1{
 
     @Override
     public void changeSpeed(double factor){
-        //todo
+        sampleRate *= factor;
     }
 }
