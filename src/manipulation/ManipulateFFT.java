@@ -12,14 +12,15 @@ public class ManipulateFFT {
     public static void changePitch(SoundObjectV1 so, double factor){
         if(so.getFrequency() == null) fft.fft(so);
 
-        int length = so.getFrequency().length;
+        int length = (int) (so.getFrequency().length / factor);
         Complex[] newFrequency = new Complex[length];
 
         for(int i = 0; i < length; i++){
-            if(i*factor < length){
+            if(i*factor < so.getFrequency().length){
                 newFrequency[i] = so.getFrequency()[(int) (i*factor)];
             }
             else {
+                System.out.println("!");
                 newFrequency[i] = new ComplexImpl();
             }
         }

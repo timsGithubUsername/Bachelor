@@ -8,11 +8,11 @@ import java.util.Arrays;
 import java.util.Date;
 
 public class SoundObjectV1Impl implements SoundObjectV1{
-    private String name;
+    private String name = "";
     private Complex[] frequency;
     private double[] magnitude, pcmData;
     private byte[] audioData;
-    private int channels, sampleRate, byteRate, blockAlign, bitsPerSample;
+    private int channels = 1, sampleRate, byteRate, blockAlign, bitsPerSample;
 
     public SoundObjectV1Impl(String name, int channels, int sampleRate, int byteRate, int blockAlign,
                             int bitsPerSecond, byte[] audioData){
@@ -23,11 +23,23 @@ public class SoundObjectV1Impl implements SoundObjectV1{
         this.blockAlign = blockAlign;
         this.bitsPerSample = bitsPerSecond;
         this.audioData = audioData;
-        this.pcmData = pcmData;
 
         setPcmData();
         reduceChannels();
     }
+    public SoundObjectV1Impl(SoundObjectV1 so){
+        this.name = so.getName();
+        this.channels = so.getChannels();
+        this.sampleRate = so.getSampleRate();
+        this.byteRate = so.getByteRate();
+        this.blockAlign = so.getBlockAlign();
+        this.bitsPerSample = so.getBitsPerSample();
+        this.audioData = so.getAudioData();
+        this.pcmData = so.getJavaPCM();
+
+        reduceChannels();
+    }
+    public SoundObjectV1Impl(){}
 
     private void setPcmData() {
         pcmData = JavaPCMTools.calculatePCMArray(audioData, bitsPerSample);
@@ -41,7 +53,6 @@ public class SoundObjectV1Impl implements SoundObjectV1{
     @Override
     public void setName(String name) {
         this.name = name;
-
     }
 
     @Override
@@ -56,7 +67,7 @@ public class SoundObjectV1Impl implements SoundObjectV1{
     }
 
     private void calcMagnitude() {
-        if(magnitude == null) magnitude = new double[frequency.length];
+        magnitude = new double[frequency.length];
         for(int i = 0; i < frequency.length; i++) magnitude[i] = frequency[i].getMagnitude();
     }
 
@@ -101,16 +112,15 @@ public class SoundObjectV1Impl implements SoundObjectV1{
     }
 
     @Override
-    public void setPCMFromIFFT(Complex[] pcm) {
-        int n = pcm.length;
-        for(int i = 0; i < pcmData.length; i++) pcmData[i] = pcm[i].times(1.0/n).getReal();
+    public void setJavaPCM(double[] pcm) {
+        this.pcmData = pcm;
         audioData = JavaPCMTools.calculateDataArray(pcmData, bitsPerSample);
     }
 
     private void reduceChannels(){
+        if(channels > 1){
         double[] newPCMData = new double[pcmData.length/channels - pcmData.length/channels % channels];
 
-        if(channels > 1){
             for(int i = 0; i < newPCMData.length; i++) {
                 newPCMData[i] = pcmData[channels * i];
             }

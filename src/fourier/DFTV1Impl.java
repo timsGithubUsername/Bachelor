@@ -40,6 +40,7 @@ public class DFTV1Impl implements DFTV1{
             output[n] = temp.times(1.0/length);
         }
 
-        so.setPCMFromIFFT(output);
+        //todo
+        //so.setPCMFromIFFT(output);
     }
 }

@@ -5,17 +5,27 @@ import data.SoundObjectV1;
 public class FFTV1Impl implements FFTV1{
     @Override
     public void fft(SoundObjectV1 so) {
-        double[] data = fillArrayWithZeros(so.getJavaPCM());
-        Complex[] output = doFFT(doubleToComplexArray(data), true);
+        Complex[] data = fillArrayWithZeros(doubleToComplexArray(so.getJavaPCM()));
+        Complex[] output = doFFT(data, true);
 
         so.setFrequency(output);
     }
 
     @Override
     public void ifft(SoundObjectV1 so) {
-        Complex[] output = doFFT(so.getFrequency(), false);
+        Complex[] data = fillArrayWithZeros(so.getFrequency());
+        Complex[] output = doFFT(data, false);
 
-        so.setPCMFromIFFT(output);
+        so.setJavaPCM(calcPCM(output));
+    }
+
+    private double[] calcPCM(Complex[] complexPCM) {
+        int n = complexPCM.length;
+        double[] output = new double[n];
+
+        for(int i = 0; i < n; i++) output[i] = complexPCM[i].times(1.0/n).getReal();
+
+        return output;
     }
 
     //true fft, false ifft
@@ -48,7 +58,7 @@ public class FFTV1Impl implements FFTV1{
         return output;
     }
 
-    private double[] fillArrayWithZeros(double[] data){
+    private Complex[] fillArrayWithZeros(Complex[] data){
         if(data.length <= 2) return data;
 
         Integer newLength = 2;
@@ -57,9 +67,11 @@ public class FFTV1Impl implements FFTV1{
             newLength *= 2;
         }
 
-        double[] output = new double[newLength];
+        Complex[] output = new Complex[newLength];
 
         for(int i = 0; i < data.length; i++) output[i] = data[i];
+        for(int i = data.length; i < newLength; i++) output[i] = new ComplexImpl();
+
         return output;
     }
 
