@@ -23,11 +23,36 @@ public class PitchFourier {
         this.factor = factor;
 
         for(int samplet = 0; samplet < samplets.getSamplets().length; samplet++){
-            createPeakPoints(samplet);
-            transformArray(samplet);
+            //createPeakPoints(samplet);
+            //transformArray(samplet);
+            shiftArray(samplet);
         }
 
         this.so = samplets.getSoundObject();
+    }
+
+    private void shiftArray(int samplet) {
+        Complex[] currentFrequenzy = samplets.getSamplets()[samplet].getFrequency();
+        Complex[] newFrequenzy = createComplexArrayOfLength(currentFrequenzy.length);
+
+        double steps = (factor - 1);
+        double currentStep = steps;
+        int newFrequencyIndex = 0;
+
+        for(int i = 0; i < newFrequenzy.length; i++){
+            if(newFrequencyIndex >= newFrequenzy.length) break;
+            newFrequenzy[newFrequencyIndex] = currentFrequenzy[i];
+            newFrequencyIndex++;
+            currentStep += steps;
+
+            if(currentStep >= 1 && newFrequencyIndex < newFrequenzy.length) {
+                currentStep -= 1;
+                newFrequenzy[newFrequencyIndex] = currentFrequenzy[i];
+                newFrequencyIndex++;
+            }
+        }
+        //fillCurrentFrequenzy(newFrequenzy, currentFrequenzy);
+        samplets.getSamplets()[samplet].setFrequency(newFrequenzy);
     }
 
     private void transformArray(int samplet) {
@@ -36,16 +61,25 @@ public class PitchFourier {
 
         int currentIndex = 0;
 
-        for(int i = 2; i < peaks.size();){
+        for(int i = 0; i < peaks.size();){
             if(currentIndex >= newFrequenzy.length) break;
-            currentIndex = copyArrayHalfPeak(newFrequenzy, currentIndex, currentFrequenzy, peaks.get(i-2), peaks.get(i-1));
-            currentIndex = setIndexZeros(currentIndex, peaks.get(i-2), peaks.get(i));
-            currentIndex = copyArrayHalfPeak(newFrequenzy, currentIndex, currentFrequenzy, peaks.get(i-1), peaks.get(i));
-
-            i+=3;
+            System.out.print(currentIndex + " <-> ");//todo
+            currentIndex = setIndexZeros(currentIndex, i == 0 ? 0 : peaks.get(i-1), peaks.get(i));
+            System.out.print(currentIndex + " | ");//todo
+            currentIndex = copyArrayPeak(newFrequenzy, currentIndex, currentFrequenzy, peaks.get(i), peaks.get(i+1));
+            i+=2;
         }
-
+        System.out.println("");
         fillCurrentFrequenzy(newFrequenzy, currentFrequenzy);
+    }
+
+    private int copyArrayPeak(Complex[] newFrequenzy, int currentIndex, Complex[] currentFrequenzy, Integer start, Integer end) {
+        for(int i = start; i < end; i++){
+            if(currentIndex >= newFrequenzy.length) break;
+            newFrequenzy[currentIndex] = currentFrequenzy[i];
+            currentIndex++;
+        }
+        return currentIndex;
     }
 
     private void fillCurrentFrequenzy(Complex[] newFrequenzy, Complex[] currentFrequenzy) {
@@ -64,15 +98,6 @@ public class PitchFourier {
         return currentIndex;
     }
 
-    private int copyArrayHalfPeak(Complex[] newFrequenzy, int currentIndex, Complex[] currentFrequenzy, Integer peak1, Integer peak2) {
-        for(int i = peak1; i < peak2; i++){
-            if(currentIndex >= newFrequenzy.length) break;
-            newFrequenzy[currentIndex] = currentFrequenzy[i];
-            currentIndex++;
-        }
-        return currentIndex;
-    }
-
 
     private void createPeakPoints(int samplet) {
         Complex[] currentFrequenzy = samplets.getSamplets()[samplet].getFrequency();
@@ -81,7 +106,6 @@ public class PitchFourier {
         boolean inPeak = false;
 
         peaks = new ArrayList<Integer>();
-        peaks.add(0);
 
         for (int i = 1; i < currentFrequenzy.length / 2; i++) {
             //if peak starts
@@ -89,18 +113,18 @@ public class PitchFourier {
                 inPeak = peakFilter.getSignalPeaks()[samplet][i];
 
                 start = i;
-                peaks.add(end + (start - end)/2);
+                peaks.add(start);
             }
             //if peak ends
             else if (inPeak && !peakFilter.getSignalPeaks()[samplet][i]) {
                 inPeak = peakFilter.getSignalPeaks()[samplet][i];
 
                 end = i;
-                peaks.add(start + (end - start)/2);
+                peaks.add(end);
             }
         }
 
-        if(!inPeak) peaks.add(((currentFrequenzy.length / 2) - end) / 2);
+        if(inPeak) peaks.add((currentFrequenzy.length / 2));
     }
 
     private Complex[] createComplexArrayOfLength(int entrys) {

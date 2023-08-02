@@ -35,7 +35,7 @@ public class Main {
         //samplets = new Samplets(so);
         //pf = new PeakFilter(samplets.getSamplets());
         //plotter.plotCoeff(samplets.getSamplets()[28]);
-        pitch = new PitchFourier(so, 1);
+        pitch = new PitchFourier(so, 1.05);
         so = pitch.getSoundobject();
 
 
