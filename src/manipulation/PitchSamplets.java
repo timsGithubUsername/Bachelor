@@ -26,7 +26,7 @@ public class PitchSamplets {
         Complex[] currentFrequenzy = samplets.getSamplets()[samplet].getFrequency();
         Complex[] newFrequenzy = createComplexArrayOfLength((int)(currentFrequenzy.length*factor));
         Complex phaseShift;
-        double tValue = (2 * factor - 2) / samplets.getOverlapFactor();
+        double tValue = (factor - 1);
         int newPosition;
 
         for(int i = 0; i < currentFrequenzy.length/2 && i * factor+0.5 < newFrequenzy.length/2; i++){

@@ -3,6 +3,7 @@ package waveIO;
 import data.SoundObjectV1;
 
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 
 public class FileWriterV1Impl implements FileWriterV1{
@@ -11,6 +12,11 @@ public class FileWriterV1Impl implements FileWriterV1{
 
     @Override
     public void write(String path, SoundObjectV1 soundObjectV1) throws Exception {
-        Files.write(Paths.get(path+soundObjectV1.getName()), waveBytesBuilder.createWaveBytes(soundObjectV1));
+        try {
+            Files.write(Paths.get(path+soundObjectV1.getName()), waveBytesBuilder.createWaveBytes(soundObjectV1));
+        } catch (NoSuchFileException e) {
+            Files.write(Paths.get(".\\"+soundObjectV1.getName()), waveBytesBuilder.createWaveBytes(soundObjectV1));
+        }
+
     }
 }

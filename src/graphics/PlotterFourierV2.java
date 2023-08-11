@@ -22,7 +22,8 @@ public class PlotterFourierV2 {
 
 
         for (int i = 0; i < plottData.length; i++) {
-            plottData[i] = getHighestValue(Arrays.copyOfRange(so.getMagnitude(), (int) ((i+1)*stepFaktor), (int) ((i + 2)*stepFaktor)));
+            //plottData[i] = getHighestValue(Arrays.copyOfRange(so.getMagnitude(), (int) ((i+1)*stepFaktor), (int) ((i + 2)*stepFaktor)));
+            plottData[i] = so.getFrequency()[i+1].getPhase();
         }
 
         //get the scale for y
