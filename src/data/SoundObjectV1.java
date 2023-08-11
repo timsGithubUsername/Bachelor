@@ -1,7 +1,5 @@
 package data;
 
-import fourier.Complex;
-
 public interface SoundObjectV1 {
     String getName();
     void setName(String name);
@@ -22,5 +20,4 @@ public interface SoundObjectV1 {
 
     //manipulation
     void setJavaPCM(double[] pcm);
-    void changeSpeed(double factor);
 }

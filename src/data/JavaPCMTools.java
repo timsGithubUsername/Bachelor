@@ -1,11 +1,13 @@
-package waveIO;
+package data;
+
+import waveIO.ByteArrayTools;
 
 import java.util.Arrays;
 
 /**
  * This class provides methods to convert byte arrays into sample arrays and vice versa
  */
-public class JavaPCMTools {
+class JavaPCMTools {
 
     /**
      * Calculate a array with samples based on the audio data and the frame size
@@ -13,7 +15,7 @@ public class JavaPCMTools {
      * @param bitsPerSample size of an sample
      * @return double array with absolut sizes
      */
-    public static double[] calculatePCMArray(byte[] audioData, int bitsPerSample) {
+    protected double[] calculatePCMArray(byte[] audioData, int bitsPerSample) {
         int bytesPerSample = bitsPerSample / 8;
         double[] output = new double[audioData.length / bytesPerSample];
 
@@ -23,7 +25,7 @@ public class JavaPCMTools {
     }
 
     //this method calculates a sample from all bytes for that sample
-    private static void fillPCMArray(byte[] audioData, double[] output, int bytesPerSample) {
+    private void fillPCMArray(byte[] audioData, double[] output, int bytesPerSample) {
         int currentPosition;
 
         for (int sample = 0; sample < output.length; sample++) {
@@ -33,7 +35,7 @@ public class JavaPCMTools {
         }
     }
 
-    public static byte[] calculateDataArray(double[] pcmData, int bitsPerSample){
+    protected byte[] calculateDataArray(double[] pcmData, int bitsPerSample){
         int bytesPerSample = bitsPerSample / 8;
         byte[] output = new byte[pcmData.length * bytesPerSample];
 
@@ -42,7 +44,7 @@ public class JavaPCMTools {
         return output;
     }
 
-    private static void fillByteArray(double[] pcmData, byte[] output, int bytesPerSample) {
+    private void fillByteArray(double[] pcmData, byte[] output, int bytesPerSample) {
         int currentPosition;
 
         for (int sample = 0; sample < pcmData.length; sample++) {

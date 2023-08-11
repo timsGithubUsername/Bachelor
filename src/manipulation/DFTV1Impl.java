@@ -1,8 +1,9 @@
-package fourier;
+package manipulation;
 
 import data.*;
+import manipulation.DFTV1;
 
-public class DFTV1Impl implements DFTV1{
+public class DFTV1Impl implements DFTV1 {
     @Override
     public void dft(SoundObjectV1 so) {
         int dataLength = so.getJavaPCM().length;
@@ -17,7 +18,7 @@ public class DFTV1Impl implements DFTV1{
             }
         }
 
-
+        so.setFrequency(frequency);
     }
 
     @Override
@@ -40,7 +41,9 @@ public class DFTV1Impl implements DFTV1{
             output[n] = temp.times(1.0/length);
         }
 
-        //todo
-        //so.setPCMFromIFFT(output);
+        double[] outputReal = new double[output.length];
+        for(int i = 0; i < outputReal.length; i++) outputReal[i] = output[i].getReal();
+
+        so.setJavaPCM(outputReal);
     }
 }

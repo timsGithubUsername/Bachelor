@@ -1,4 +1,4 @@
-package fourier;
+package manipulation;
 
 import data.SoundObjectV1;
 

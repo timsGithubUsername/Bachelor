@@ -19,15 +19,18 @@ public class PlotterPCM {
      */
     public static BufferedImage plott(SoundObjectV1 so, int sizeX, int sizeY) {
         //calculate the stepsize for x
-        int stepsize = so.getJavaPCM().length / sizeX;
+        double stepFaktor = so.getJavaPCM().length > sizeX ? (double) so.getJavaPCM().length / sizeX : 1;
 
         //calculate Plott-Array (datapoints to plot)
-        double[] plot = new double[sizeX];
+        double[] plot = new double[so.getJavaPCM().length > sizeX ? sizeX : so.getJavaPCM().length];
 
         //fill Plott-Array
-        for(int i = 0; i < plot.length; i++){
-            plot[i] = getWeightedAverageOf(Arrays.copyOfRange(so.getJavaPCM(), i * stepsize, (i + 1) * stepsize - 1));
+        if(so.getJavaPCM().length > sizeX) {
+            for (int i = 0; i < plot.length; i++) {
+                plot[i] = getWeightedAverageOf(Arrays.copyOfRange(so.getJavaPCM(), (int) (i * stepFaktor), (int) ((i + 1) * stepFaktor - 1)));
+            }
         }
+        else plot = so.getJavaPCM();
 
         //get the scale for y
         double scale = sizeY / getHighestValue(plot) / 2;
@@ -35,7 +38,7 @@ public class PlotterPCM {
         BufferedImage output = new BufferedImage(sizeX, sizeY,BufferedImage.TYPE_4BYTE_ABGR);
 
         //for each x and y plot if data is in range
-        for(int x = 0; x < sizeX; x++){
+        for(int x = 0; x < plot.length; x++){
             for(int y = 0; y < sizeY / 2; y++){
                 if(sizeY / 2 - y <= plot[x] * scale){
                     output.setRGB(x,y, Color.BLACK.getRGB());
@@ -47,7 +50,24 @@ public class PlotterPCM {
                 }
             }
         }
+
+        drawGrid(sizeX, sizeY, output);
+
         return output;
+    }
+    private static void drawGrid(int sizeX, int sizeY, BufferedImage output) {
+        Integer nextGrid = 100;
+
+        //make grid
+        for (int x = 0; x < sizeX; x++) {
+            if (nextGrid.compareTo(x) < 0) {
+                for (int y = 0; y < sizeY; y++) {
+                    if (nextGrid % 1000 == 0) output.setRGB(x, y, Color.BLACK.getRGB());
+                    else if (y % 4 == 0) output.setRGB(x, y, Color.BLACK.getRGB());
+                }
+                nextGrid += 100;
+            }
+        }
     }
 
     //

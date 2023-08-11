@@ -7,8 +7,6 @@ import java.awt.image.BufferedImage;
 import java.util.Arrays;
 
 public class PlotterFourierV2 {
-    private static double maxFrequency = 20000;
-
     /**
      * plott returns a buffered image with sizeX and sizeY of given FourierObject fo
      *
@@ -19,16 +17,13 @@ public class PlotterFourierV2 {
      */
     public static BufferedImage plott(SoundObjectV1 so, int sizeX, int sizeY) {
 
-        double[] plottData = new double[sizeX];
-        int step = (int) (maxFrequency / sizeX);
-        int binStep = step * so.getMagnitude().length / so.getSampleRate();
+        double[] plottData = new double[so.getMagnitude().length/2 > sizeX ? sizeX : so.getMagnitude().length/2 - 1];
+        double stepFaktor = so.getMagnitude().length > sizeX ? (double) so.getMagnitude().length/2 / sizeX : 1;
 
-        if(so.getMagnitude().length < sizeX) {
-            for (int i = 0; i < sizeX; i++) {
-                plottData[i] = getHighestValue(Arrays.copyOfRange(so.getMagnitude(), i, i + binStep));
-            }
+
+        for (int i = 0; i < plottData.length; i++) {
+            plottData[i] = getHighestValue(Arrays.copyOfRange(so.getMagnitude(), (int) ((i+1)*stepFaktor), (int) ((i + 2)*stepFaktor)));
         }
-        else plottData = Arrays.copyOfRange(so.getMagnitude(), 0, so.getMagnitude().length);
 
         //get the scale for y
         double scale = sizeY / getHighestValue(plottData);
@@ -38,7 +33,7 @@ public class PlotterFourierV2 {
         //for each x and y plot if data is in range
         drawData(sizeX, sizeY, plottData, scale, output);
 
-        drawGrid(sizeX, sizeY, step, output);
+        drawGrid(sizeX, sizeY, stepFaktor, output, so);
 
         return output;
     }
@@ -46,7 +41,9 @@ public class PlotterFourierV2 {
     private static void drawData(int sizeX, int sizeY, double[] plottData, double scale, BufferedImage output) {
         for (int x = 0; x < sizeX; x++) {
             for (int y = 0; y < sizeY; y++) {
-                if (sizeY - y <= plottData[x] * scale * 2) {
+                if (x >= plottData.length) {
+                    output.setRGB(x, y, Color.red.getRGB());
+                } else if (sizeY - y <= plottData[x] * scale * 2) {
                     output.setRGB(x, y, Color.gray.getRGB());
                 } else {
                     output.setRGB(x, y, Color.white.getRGB());
@@ -55,17 +52,18 @@ public class PlotterFourierV2 {
         }
     }
 
-    private static void drawGrid(int sizeX, int sizeY, int step, BufferedImage output) {
-        Integer nextGrid = 100;
+    private static void drawGrid(int sizeX, int sizeY, double stepFaktor, BufferedImage output, SoundObjectV1 so) {
+        Integer gridStep = (int)(100.0 * so.getMagnitude().length / (so.getSampleRate() * stepFaktor)); // * 1/faktor um zu skalieren und verschiebung zu zeigen
+        Integer nextGrid = gridStep;
 
         //make grid
         for (int x = 0; x < sizeX; x++) {
-            if (nextGrid.compareTo(step * x) < 0) {
+            if (nextGrid.compareTo(x) < 0) {
                 for (int y = 0; y < sizeY; y++) {
-                    if(nextGrid % 1000 == 0) output.setRGB(x, y, Color.BLACK.getRGB());
-                    else if(y % 4 == 0) output.setRGB(x, y, Color.BLACK.getRGB());
+                    if (nextGrid % (10*gridStep) == 0) output.setRGB(x, y, Color.BLACK.getRGB());
+                    else if (y % 4 == 0) output.setRGB(x, y, Color.BLACK.getRGB());
                 }
-                nextGrid += 100;
+                nextGrid += gridStep;
             }
         }
     }

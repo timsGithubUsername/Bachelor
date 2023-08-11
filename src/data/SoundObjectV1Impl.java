@@ -1,18 +1,12 @@
 package data;
 
-import fourier.Complex;
-import waveIO.ByteArrayTools;
-import waveIO.JavaPCMTools;
-
-import java.util.Arrays;
-import java.util.Date;
-
 public class SoundObjectV1Impl implements SoundObjectV1{
     private String name = "";
     private Complex[] frequency;
     private double[] magnitude, pcmData;
     private byte[] audioData;
     private int channels = 1, sampleRate, byteRate, blockAlign, bitsPerSample;
+    private JavaPCMTools pcmTools = new JavaPCMTools();
 
     public SoundObjectV1Impl(String name, int channels, int sampleRate, int byteRate, int blockAlign,
                             int bitsPerSecond, byte[] audioData){
@@ -42,7 +36,7 @@ public class SoundObjectV1Impl implements SoundObjectV1{
     public SoundObjectV1Impl(){}
 
     private void setPcmData() {
-        pcmData = JavaPCMTools.calculatePCMArray(audioData, bitsPerSample);
+        pcmData = pcmTools.calculatePCMArray(audioData, bitsPerSample);
     }
 
     @Override
@@ -114,7 +108,7 @@ public class SoundObjectV1Impl implements SoundObjectV1{
     @Override
     public void setJavaPCM(double[] pcm) {
         this.pcmData = pcm;
-        audioData = JavaPCMTools.calculateDataArray(pcmData, bitsPerSample);
+        audioData = pcmTools.calculateDataArray(pcmData, bitsPerSample);
     }
 
     private void reduceChannels(){
@@ -126,16 +120,11 @@ public class SoundObjectV1Impl implements SoundObjectV1{
             }
 
             pcmData = newPCMData;
-            audioData = JavaPCMTools.calculateDataArray(pcmData, bitsPerSample);
+            audioData = pcmTools.calculateDataArray(pcmData, bitsPerSample);
 
             byteRate = byteRate/channels;
             blockAlign = blockAlign/channels;
             channels = 1;
         }
-    }
-
-    @Override
-    public void changeSpeed(double factor){
-        sampleRate *= factor;
     }
 }

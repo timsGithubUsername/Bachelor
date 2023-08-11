@@ -1,5 +1,7 @@
 package fourier;
 
+import data.Complex;
+import data.ComplexImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

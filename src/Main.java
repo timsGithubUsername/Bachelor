@@ -1,11 +1,7 @@
 import data.SoundObjectV1;
-import fourier.*;
 import graphics.PlotterV1;
 import graphics.PlotterV1Impl;
-import manipulation.ManipulateFFT;
-import manipulation.PeakFilter;
-import manipulation.PitchFourier;
-import manipulation.Samplets;
+import manipulation.*;
 import waveIO.FileReaderV1;
 import waveIO.FileReaderV1Impl;
 import waveIO.FileWriterV1;
@@ -19,24 +15,28 @@ public class Main {
         DFTV1 dft = new DFTV1Impl();
         FFTV1 fft = new FFTV1Impl();
         SoundObjectV1 so;
-        Samplets samplets;
-        PeakFilter pf;
-        PitchFourier pitch;
+        PitchSamplets pitch = new PitchSamplets();
+        PitchShift pitchShift = new PitchShift();
 
 
         try {
             //so  = fr.read("C:\\Users\\timro\\IdeaProjects\\Bachelor\\rec\\C418-Minecraft.wav");
             so  = fr.read("C:\\Users\\timro\\IdeaProjects\\Bachelor\\rec\\C-small.wav");
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
-        so.setName("c-test.wav");
-        //samplets = new Samplets(so);
+        so.setName("c-radex2.wav");
+        //samplets = new HannWindows(so);
         //pf = new PeakFilter(samplets.getSamplets());
         //plotter.plotCoeff(samplets.getSamplets()[28]);
-        pitch = new PitchFourier(so, 1.05);
-        so = pitch.getSoundobject();
+        fft.fft(so);
+        plotter.plotCoeff(so);
+        so = pitch.pitch(so, 1.2);
+
+        //Complex[] freq = samplets.getSamplets()[10].getFrequency();
+        //for(int i = 0; i < freq.length; i++) System.out.println(freq[i] + " <-> " + freq[freq.length - (i+1)]);
 
 
         try {
@@ -46,4 +46,5 @@ public class Main {
         }
         System.out.println("");
     }
+
 }

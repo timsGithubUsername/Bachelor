@@ -1,6 +1,6 @@
-package fourier;
+package data;
 
-public class ComplexImpl implements Complex{
+public class ComplexImpl implements Complex {
     private double imaginary, real, magnitude;
 
     public ComplexImpl(double real, double imaginary){
@@ -31,6 +31,11 @@ public class ComplexImpl implements Complex{
     @Override
     public double getMagnitude() {
         return magnitude;
+    }
+
+    @Override
+    public double getPhase() {
+        return Math.atan2(imaginary,real);
     }
 
     @Override
@@ -76,6 +81,11 @@ public class ComplexImpl implements Complex{
         }
 
         return output;
+    }
+
+    @Override
+    public Complex getConjugate() {
+        return new ComplexImpl(real, -imaginary);
     }
 
     @Override

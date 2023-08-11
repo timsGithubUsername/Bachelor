@@ -1,9 +1,10 @@
-package fourier;
+package data;
 
 public interface Complex {
     double getImaginary();
     double getReal();
     double getMagnitude();
+    double getPhase();
 
     Complex add(Complex number);
     Complex substract(Complex number);
@@ -13,4 +14,9 @@ public interface Complex {
     Complex times(double number);
 
     Complex pow(int power);
+    Complex getConjugate();
+
+    static Complex ComplexPolar(double magnitude, double phase) {
+        return new ComplexImpl(magnitude*Math.cos(phase), magnitude*Math.sin(phase));
+    }
 }
